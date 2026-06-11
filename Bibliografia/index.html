@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliografía - Matemáticas Financieras y Proyectos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-base: #007279; 
+            --accent-bright: #00f0fc; 
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(0, 114, 121, 0.3);
+            --text-main: #ffffff;
+            --text-dim: #b3f2f5;
+        }
+
+        body {
+            margin: 0; padding: 0; min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: #000a0b;
+            color: var(--text-main);
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden; cursor: default;
+        }
+
+        #custom-cursor-tool {
+            position: fixed; pointer-events: none;
+            background: var(--accent-bright); color: #000;
+            padding: 5px 12px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 700;
+            z-index: 9999; display: none;
+            transform: translate(15px, 15px);
+            box-shadow: 0 0 15px var(--accent-bright);
+        }
+
+        .fluid-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden; background: #000f11; filter: blur(80px);
+        }
+        .fluid-layer { position: absolute; border-radius: 50%; opacity: 0.35; animation: fluidMove infinite alternate ease-in-out; }
+        .layer-1 { background: radial-gradient(circle, var(--accent-base) 0%, transparent 70%); width: 100vw; height: 100vw; top: -30%; left: -10%; animation-duration: 20s; }
+        .layer-2 { background: radial-gradient(circle, #002d30 0%, transparent 70%); width: 80vw; height: 80vw; bottom: -20%; right: -10%; animation-duration: 25s; }
+        @keyframes fluidMove { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(10%, 5%) scale(1.1); } }
+
+        .nav-instruction {
+            width: 90vw; max-width: 1400px;
+            background: rgba(0, 114, 121, 0.15);
+            border: 1px dashed var(--accent-bright);
+            padding: 15px; border-radius: 12px;
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem; color: var(--accent-bright);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .main-header { text-align: center; padding: 30px 20px; z-index: 1; }
+        .main-header h1 { font-weight: 300; font-size: 2rem; letter-spacing: 6px; text-transform: uppercase; margin: 0; background: linear-gradient(to right, #fff, var(--text-dim)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .main-header .line { width: 60px; height: 3px; background: var(--accent-bright); margin: 15px auto; }
+
+        .reference-grid {
+            display: grid; width: 90vw; max-width: 1400px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px; padding-bottom: 80px; z-index: 1;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; padding: 25px;
+            display: flex; flex-direction: column;
+            transition: all 0.3s ease;
+            min-height: 190px;
+        }
+        .card:hover { border-color: var(--accent-bright); transform: translateY(-5px); background: rgba(0, 114, 121, 0.08); box-shadow: 0 10px 20px rgba(0, 114, 121, 0.1); }
+
+        .author-tag { font-size: 0.7rem; font-weight: 600; color: var(--accent-bright); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+        .title { font-size: 0.95rem; line-height: 1.5; color: var(--text-main); margin-bottom: 15px; }
+
+        .footer-info {
+            font-size: 0.75rem; color: var(--text-dim);
+            border-top: 1px solid rgba(0, 114, 121, 0.2);
+            padding-top: 15px; margin-top: auto;
+        }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-visit { text-decoration: none; background: var(--accent-bright); color: #000; padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; transition: background 0.2s; }
+        .btn-visit:hover { background: #fff; }
+        .btn-copy { background: transparent; border: 1px solid var(--accent-bright); color: var(--accent-bright); padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .btn-copy:hover { background: var(--accent-bright); color: #000; }
+        
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor-tool">¡Enlace Copiado!</div>
+
+    <div class="fluid-background">
+        <div class="fluid-layer layer-1"></div>
+        <div class="fluid-layer layer-2"></div>
+    </div>
+
+    <div class="nav-instruction">
+        📈 <b>Instrucción de Navegación:</b> Revisa las fuentes académicas sobre ingeniería económica y análisis de inversión. Utiliza <b>Visitar</b> para acceder a los textos digitales institucionales o <b>Copiar Link</b> para guardar la URL de la referencia.
+    </div>
+
+    <header class="main-header">
+        <h1>Matemáticas Financieras y Proyectos</h1>
+        <div class="line"></div>
+    </header>
+
+    <main class="reference-grid" id="grid"></main>
+
+    <script>
+        const sources = [
+            { a: "Agudelo, D., & otros. (2019)", t: "Matemáticas financieras: conceptos y aplicaciones", f: "Pearson Educación (Ebooks 7-24)", u: "https://www-ebooks7-24-com.biblio.uptc.edu.co/?il=7897" },
+            { a: "Baca Urbina, G. (2022)", t: "Evaluación de Proyectos Plus", f: "McGrawHill - Plus (Ebooks 7-24)", u: "https://www-ebooks7-24-com.biblio.uptc.edu.co/?il=33271" },
+            { a: "Buenaventura, V. G. (2018)", t: "Fundamentos de matemáticas financieras", f: "Ecoe Ediciones (Ebooks 7-24)", u: "https://www-ebooks7-24-com.biblio.uptc.edu.co/?il=6319" },
+            { a: "Cabedo Semper, D. (2015)", t: "Introducción a la matemática de las operaciones financieras", f: "Editorial Universitat Jaume I (Archive.org)", u: "https://archive.org/details/2015IntroduccionALaMatematicaDeLasOperacionesFinancieras/page/n1/mode/2up" },
+            { a: "Chu Rubio, M. (2019)", t: "Finanzas aplicadas, teoría y práctica", f: "Ediciones de la U (Ebooks 7-24)", u: "https://www-ebooks7-24-com.biblio.uptc.edu.co/?il=8999" },
+            { a: "Méndez, G. M. (2017)", t: "Matemáticas financieras: rentas a interés compuesto. Problemario", f: "Ediciones de la U (Ebooks 7-24)", u: "https://www-ebooks7-24-com.biblio.uptc.edu.co/?il=9267" },
+            { a: "Meza, O. J. (2017)", t: "Matemáticas financieras aplicadas", f: "Ecoe Ediciones (Ebooks 7-24)", u: "https://www-ebooks7-24-com.biblio.uptc.edu.co/?il=5721" },
+            { a: "Ortiz, A. H. (2019)", t: "Finanzas básicas para no financieros", f: "Cengage Learning (Ebooks 7-24)", u: "https://ebooks7-24-com.biblio.uptc.edu.co/?il=9978" },
+            { a: "Puerta, F., & otros. (2024)", t: "Aplicaciones de las matemáticas financieras a las Normas Internacionales de la Información Financiera - NIIF", f: "Editorial Klasse (Ebooks 7-24)", u: "https://www-ebooks7-24-com.biblio.uptc.edu.co/?il=41508&pg=1" },
+            { a: "Ramírez, D. J. (2019)", t: "Evaluación financiera de proyectos: con aplicaciones en Excel", f: "Ediciones de la U (Ebooks 7-24)", u: "https://www-ebooks7-24-com.biblio.uptc.edu.co/?il=9099" },
+            { a: "Ross, S. (2022)", t: "Finanzas corporativas", f: "McGraw-Hill Interamericana (Ebooks 7-24)", u: "https://www-ebooks7-24-com.biblio.uptc.edu.co/visorEpub.aspx?i=22472&t=CF29882B-C358-4681-9386-17BD3B9C22C5" },
+            { a: "Serrano, R. J. (2011)", t: "Matemáticas financieras y evaluación de proyectos (2.ª ed.)", f: "Alfaomega & Universidad de los Andes", u: null },
+            { a: "Vidaurri Aguirre, H. M. (2020)", t: "Matemáticas financieras", f: "Cengage Learning (Ebooks 7-24)", u: "https://www-ebooks7-24-com.biblio.uptc.edu.co/?il=10760" }
+        ];
+
+        const grid = document.getElementById('grid');
+        const tool = document.getElementById('custom-cursor-tool');
+
+        document.addEventListener('mousemove', (e) => {
+            tool.style.left = e.clientX + 'px';
+            tool.style.top = e.clientY + 'px';
+        });
+
+        sources.forEach((s) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            let html = `
+                <div class="author-tag">${s.a}</div>
+                <div class="title">${s.t}</div>
+                <div class="footer-info">${s.f}</div>
+            `;
+
+            if(s.u) {
+                html += `
+                    <div class="btn-group">
+                        <a href="${s.u}" target="_blank" class="btn-visit">Visitar</a>
+                        <button class="btn-copy" onclick="copyLink('${s.u}')">Copiar Link</button>
+                    </div>
+                `;
+            }
+
+            card.innerHTML = html;
+            grid.appendChild(card);
+        });
+
+        function copyLink(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                tool.style.display = 'block';
+                setTimeout(() => { tool.style.display = 'none'; }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>

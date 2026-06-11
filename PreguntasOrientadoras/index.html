@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulos de Aprendizaje Financiero</title>
+    <style>
+        :root {
+            --bg-color: #f3f7f9;
+            --card-bg: #ffffff;
+            --primary: #0a7c85;
+            --primary-light: #e6f4f5;
+            --secondary: #4a90e2;
+            --secondary-light: #edf4fc;
+            --text-dark: #2c3e50;
+            --text-muted: #627d98;
+            --shadow: 0 10px 30px rgba(10, 124, 133, 0.05);
+            --shadow-hover: 0 20px 40px rgba(10, 124, 133, 0.12);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 60px 20px 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Instrucción flotante superior derecha */
+        .floating-instruction {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary), #1199a4);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(10, 124, 133, 0.2);
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulseHint 2s infinite alternate;
+        }
+
+        .floating-instruction svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            width: 100%;
+            margin: 40px 0 20px 0;
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-left: 4px solid var(--primary);
+            padding-left: 12px;
+        }
+
+        .section-title.blue {
+            border-left-color: var(--secondary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 35px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 35px 30px 30px 30px;
+            position: relative;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+            border-top: 5px solid transparent;
+            cursor: pointer;
+            animation: scaleUp 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) both;
+        }
+
+        .card.style-light-teal { border-top-color: var(--primary-light); }
+        .card.style-dark-teal { border-top-color: var(--primary); }
+        .card.style-light-blue { border-top-color: var(--secondary-light); }
+        .card.style-dark-blue { border-top-color: var(--secondary); }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .badge {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .card.style-light-teal .badge { border-color: var(--primary-light); color: var(--primary); }
+        .card.style-dark-teal .badge { background: var(--primary); color: #ffffff; }
+        .card.style-light-blue .badge { border-color: var(--secondary-light); color: var(--secondary); }
+        .card.style-dark-blue .badge { background: var(--secondary); color: #ffffff; }
+
+        .card:hover .badge { transform: translateX(-50%) scale(1.1); }
+
+        .card-content {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            font-weight: 600;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-dots {
+            color: var(--text-muted);
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        .card-action {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn {
+            background: transparent;
+            border: 2px solid;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+        }
+
+        .card.style-light-teal .btn { border-color: var(--primary); color: var(--primary); }
+        .card.style-dark-teal .btn { border-color: var(--primary); background: var(--primary); color: #ffffff; }
+        .card.style-light-blue .btn { border-color: var(--secondary); color: var(--secondary); }
+        .card.style-dark-blue .btn { border-color: var(--secondary); background: var(--secondary); color: #ffffff; }
+
+        .card.style-light-teal .btn:hover { background: var(--primary); color: #ffffff; }
+        .card.style-dark-teal .btn:hover { background: #086169; transform: scale(1.05); }
+        .card.style-light-blue .btn:hover { background: var(--secondary); color: #ffffff; }
+        .card.style-dark-blue .btn:hover { background: #357abd; transform: scale(1.05); }
+
+        .btn svg { width: 16px; height: 16px; fill: currentColor; transition: transform 0.3s ease; }
+        .btn:hover svg { transform: translateX(4px); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(44, 62, 80, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal {
+            background: white; padding: 40px; border-radius: 20px;
+            max-width: 550px; width: 90%; text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            transform: scale(0.9); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal { transform: scale(1); }
+        .modal h3 { margin-bottom: 20px; color: var(--primary); font-size: 1.5rem; }
+        .modal p { color: var(--text-dark); font-size: 1.2rem; line-height: 1.6; margin-bottom: 30px; font-weight: 500; }
+        .modal .close-btn {
+            background: var(--text-dark); color: white; border: none;
+            padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: 600;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes pulseHint {
+            from { transform: scale(1); box-shadow: 0 8px 20px rgba(10, 124, 133, 0.2); }
+            to { transform: scale(1.04); box-shadow: 0 12px 25px rgba(10, 124, 133, 0.35); }
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            body { padding-top: 90px; }
+            .floating-instruction { width: calc(100% - 40px); left: 20px; text-align: center; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Instrucción flotante -->
+    <div class="floating-instruction">
+        <svg viewBox="0 0 24 24"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Haga clic en los botones para ampliar la información.
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Cuestionarios Interactivos Financieros</h1>
+            <p>Explora los conceptos clave de cada módulo financiero haciendo clic en sus tarjetas.</p>
+        </header>
+
+        <!-- BLOQUE 1 -->
+        <div class="section-title">Bloque General de Aprendizaje</div>
+        <div class="grid">
+            <!-- Tarjeta 1 -->
+            <div class="card style-light-teal" onclick="openModal('Pregunta 1', '¿Cuáles son las principales diferencias entre el mercado monetario, de divisas y de capitales?')">
+                <div class="badge">1</div>
+                <div class="card-content">¿Cuáles son las principales diferencias...<div class="preview-dots">...</div></div>
+                <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+            </div>
+            <!-- Tarjeta 2 -->
+            <div class="card style-light-teal" onclick="openModal('Pregunta 2', '¿Qué tipos de activos financieros existen y cuáles son sus principales usos?')">
+                <div class="badge">2</div>
+                <div class="card-content">¿Qué tipos de activos financieros existen...<div class="preview-dots">...</div></div>
+                <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+            </div>
+            <!-- Tarjeta 3 -->
+            <div class="card style-dark-teal" onclick="openModal('Pregunta 3', '¿Cómo se relacionan la rentabilidad, el riesgo y la liquidez en la selección de activos financieros?')">
+                <div class="badge">3</div>
+                <div class="card-content">¿Cómo se relacionan la rentabilidad...<div class="preview-dots">...</div></div>
+                <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+            </div>
+            <!-- Tarjeta 4 -->
+            <div class="card style-dark-teal" onclick="openModal('Pregunta 4', '¿Qué tipos de garantías existen y cómo influyen en la aprobación de un crédito?')">
+                <div class="badge">4</div>
+                <div class="card-content">¿Qué tipos de garantías existen...<div class="preview-dots">...</div></div>
+                <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+            </div>
+            <!-- Tarjeta 5 -->
+            <div class="card style-dark-teal" onclick="openModal('Pregunta 5', '¿Cuál es el ciclo de vida típico de la aprobación de un crédito bancario?')">
+                <div class="badge">5</div>
+                <div class="card-content">¿Cuál es el ciclo de vida típico...<div class="preview-dots">...</div></div>
+                <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+            </div>
+            <!-- Tarjeta 6 -->
+            <div class="card style-light-teal" onclick="openModal('Pregunta 6', '¿En qué consiste el método de amortización americano, francés y alemán?')">
+                <div class="badge">6</div>
+                <div class="card-content">¿En qué consiste el método de amortización...<div class="preview-dots">...</div></div>
+                <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+            </div>
+        </div>
+
+        <!-- BLOQUE 2 -->
+        <div class="section-title blue">Bloque de Análisis de Riesgo y Proyecciones</div>
+        <div class="grid">
+            <!-- Tarjeta 1 (B2) -->
+            <div class="card style-light-blue" onclick="openModal('Análisis Avanzado 1', '¿Cuál es la diferencia entre un período de gracia con capitalización de intereses y uno con pago parcial?')">
+                <div class="badge">1</div>
+                <div class="card-content">¿Cuál es la diferencia entre un período...<div class="preview-dots">...</div></div>
+                <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+            </div>
+            <!-- Tarjeta 2 (B2) -->
+            <div class="card style-light-blue" onclick="openModal('Análisis Avanzado 2', '¿Qué técnicas de proyección de escenarios existen para anticipar riesgos en proyectos financieros?')">
+                <div class="badge">2</div>
+                <div class="card-content">¿Qué técnicas de proyección de escenarios...<div class="preview-dots">...</div></div>
+                <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+            </div>
+            <!-- Tarjeta 3 (B2) -->
+            <div class="card style-dark-blue" onclick="openModal('Análisis Avanzado 3', '¿De qué manera la simulación de Montecarlo aporta una visión más completa frente a la incertidumbre?')">
+                <div class="badge">3</div>
+                <div class="card-content">¿De qué manera la simulación de Montecarlo...<div class="preview-dots">...</div></div>
+                <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <h3 id="modalTitle">Pregunta Completa</h3>
+            <p id="modalBody">Contenido...</p>
+            <button class="close-btn" onclick="closeModal()">Cerrar Ventana</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal(title, text) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerText = text;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+    </script>
+</body>
+</html>

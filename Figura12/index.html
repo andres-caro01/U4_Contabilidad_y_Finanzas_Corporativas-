@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Simulación de Proyectos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --color-teal: #4fa3a5;
+            --color-red: #e62a3a;
+            --color-purple: #9b51e0;
+            --color-orange: #ff9f00;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        /* Encabezado e Instrucciones */
+        .instruction-container {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .instruction-container h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.6rem;
+            background: linear-gradient(135deg, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .instruction-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .instruction-tag span {
+            color: var(--color-orange);
+            font-weight: 600;
+        }
+
+        /* Grid de Tarjetas Cilíndricas */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            animation: fadeInUp 0.8s ease-out 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        /* Estilo Base de las Cápsulas */
+        .capsule-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 100px;
+            padding: 3rem 1.5rem 4rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            border: 4px solid transparent;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Variaciones de Color por Tarjeta */
+        .capsule-card.teal { border-color: var(--color-teal); background: linear-gradient(180deg, rgba(79,163,165,0.15) 0%, rgba(11,15,25,0.4) 100%); }
+        .capsule-card.red { border-color: var(--color-red); background: linear-gradient(180deg, rgba(230,42,58,0.15) 0%, rgba(11,15,25,0.4) 100%); }
+        .capsule-card.purple { border-color: var(--color-purple); background: linear-gradient(180deg, rgba(155,81,224,0.15) 0%, rgba(11,15,25,0.4) 100%); }
+        .capsule-card.orange { border-color: var(--color-orange); background: linear-gradient(180deg, rgba(255,159,0,0.15) 0%, rgba(11,15,25,0.4) 100%); }
+
+        /* Contenedor del Icono Blanco Circular */
+        .icon-sphere {
+            width: 110px;
+            height: 110px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), inset 0 -4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .icon-sphere svg {
+            width: 50px;
+            height: 50px;
+        }
+
+        /* Títulos y Descripciones Cortas */
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+            opacity: 0.8;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* --- EFECTOS HOVER --- */
+        .capsule-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+        
+        .capsule-card.teal:hover { box-shadow: 0 0 35px rgba(79,163,165,0.4); }
+        .capsule-card.red:hover { box-shadow: 0 0 35px rgba(230,42,58,0.4); }
+        .capsule-card.purple:hover { box-shadow: 0 0 35px rgba(155,81,224,0.4); }
+        .capsule-card.orange:hover { box-shadow: 0 0 35px rgba(255,159,0,0.4); }
+
+        .capsule-card:hover .icon-sphere {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* --- VENTANA EMERGENTE MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 8, 16, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #131a2c;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            width: 90%;
+            max-width: 550px;
+            border-radius: 32px;
+            padding: 3rem;
+            position: relative;
+            transform: scale(0.85) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-accent-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            border-radius: 32px 32px 0 0;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #94a3b8;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .modal-icon-wrap {
+            width: 90px;
+            height: 90px;
+            background: #fff;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-icon-wrap svg {
+            width: 42px;
+            height: 42px;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .modal-body-text {
+            font-size: 1.05rem;
+            color: #94a3b8;
+            line-height: 1.7;
+        }
+
+        /* Animaciones del Sistema */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsivo / Mobile */
+        @media (max-width: 968px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .capsule-card {
+                border-radius: 60px;
+                padding: 2.5rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            body { padding: 1rem; }
+            .instruction-container h1 { font-size: 1.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="instruction-container">
+        <h1>Estructuración de Simulación Financiera</h1>
+        <div class="instruction-tag">
+            💡 <span>Instrucción:</span> Haga clic sobre las tarjetas para ampliar la información.
+        </div>
+    </div>
+
+    <div class="cards-grid">
+        
+        <div class="capsule-card teal" onclick="openModal('teal', 1)">
+            <div class="icon-sphere">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#4fa3a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3h18v18H3z"/>
+                    <path d="M21 9H3M21 15H3M12 3v18"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Usar Tabla de Datos</h2>
+            <p class="card-desc">Aplicar la función de Tabla de datos de Excel Para el análisis.</p>
+        </div>
+
+        <div class="capsule-card red" onclick="openModal('red', 2)">
+            <div class="icon-sphere">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#e62a3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3v18h18"/>
+                    <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Establecer los datos<br>A simular</h2>
+            <p class="card-desc">Establecer los rangos de Datos para la simulación.</p>
+        </div>
+
+        <div class="capsule-card purple" onclick="openModal('purple', 3)">
+            <div class="icon-sphere">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#9b51e0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 20l8-12 8 12"/>
+                    <path d="M2 4h20"/>
+                    <circle cx="12" cy="8" r="2" fill="#9b51e0"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Identificar Variables</h2>
+            <p class="card-desc">Determinar las variables clave que afectan la rentabilidad. (ej. Tasa de Interés, inflación, costos De materiales, ingresos esperados).</p>
+        </div>
+
+        <div class="capsule-card orange" onclick="openModal('orange', 4)">
+            <div class="icon-sphere">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#ff9f00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="5" r="3"/>
+                    <circle cx="5" cy="19" r="3"/>
+                    <circle cx="19" cy="19" r="3"/>
+                    <path d="M5 16v-5a7 7 0 0 1 14 0v5"/>
+                </svg>
+            </div>
+            <h2 class="card-title">Establecer Modelo</h2>
+            <p class="card-desc">Crear un modelo de flujo de caja para el proyecto.</p>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModalByOverlay(event)">
+        <div class="modal-box" id="modalBox">
+            <div class="modal-accent-bar" id="modalBar"></div>
+            <button class="modal-close-btn" onclick="forceCloseModal()">&times;</button>
+            <div class="modal-icon-wrap" id="modalIconContainer"></div>
+            <h2 class="modal-title" id="modalTitle">Título</h2>
+            <p class="modal-body-text" id="modalBody">Descripción estructurada.</p>
+        </div>
+    </div>
+
+    <script>
+        const infoData = {
+            1: {
+                title: "Usar Tabla de Datos",
+                desc: "Aplicar la función de Tabla de datos de Excel Para el análisis sistemático de escenarios financieros complejos.",
+                svg: `<svg viewBox="0 0 24 24" fill="none" stroke="#4fa3a5" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M21 9H3M21 15H3M12 3v18"/></svg>`
+            },
+            2: {
+                title: "Establecer los datos A simular",
+                desc: "Establecer con precisión los rangos estocásticos y fijos de datos fundamentales necesarios para correr las pruebas de simulación.",
+                svg: `<svg viewBox="0 0 24 24" fill="none" stroke="#e62a3a" stroke-width="2"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>`
+            },
+            3: {
+                title: "Identificar Variables",
+                desc: "Determinar exhaustivamente las variables clave que afectan la rentabilidad de manera directa o indirecta. (Por ejemplo: Tasa de Interés, inflación, costos de materiales, e ingresos esperados bajo incertidumbre).",
+                svg: `<svg viewBox="0 0 24 24" fill="none" stroke="#9b51e0" stroke-width="2"><path d="M4 20l8-12 8 12"/><path d="M2 4h20"/><circle cx="12" cy="8" r="2" fill="#9b51e0"/></svg>`
+            },
+            4: {
+                title: "Establecer Modelo",
+                desc: "Diseñar y crear un modelo matemático estructurado de flujo de caja predictivo adaptado para el proyecto.",
+                svg: `<svg viewBox="0 0 24 24" fill="none" stroke="#ff9f00" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M5 16v-5a7 7 0 0 1 14 0v5"/></svg>`
+            }
+        };
+
+        const colors = {
+            teal: 'var(--color-teal)',
+            red: 'var(--color-red)',
+            purple: 'var(--color-purple)',
+            orange: 'var(--color-orange)'
+        };
+
+        function openModal(colorType, id) {
+            const overlay = document.getElementById('modalOverlay');
+            const bar = document.getElementById('modalBar');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            const iconWrap = document.getElementById('modalIconContainer');
+
+            bar.style.backgroundColor = colors[colorType];
+            title.innerText = infoData[id].title;
+            title.style.color = colors[colorType];
+            body.innerText = infoData[id].desc;
+            iconWrap.innerHTML = infoData[id].svg;
+
+            overlay.classList.add('active');
+        }
+
+        // Cierre forzado mediante botón o teclado
+        function forceCloseModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        // Cierre únicamente si haces click en el fondo desenfocado
+        function closeModalByOverlay(e) {
+            const overlay = document.getElementById('modalOverlay');
+            if (e.target === overlay) {
+                overlay.classList.remove('active');
+            }
+        }
+
+        // Escuchador global de teclado para cerrar con "Esc" o "Enter"
+        document.addEventListener('keydown', function(event) {
+            const overlay = document.getElementById('modalOverlay');
+            // Solo actúa si la ventana emergente está visible
+            if (overlay.classList.contains('active')) {
+                if (event.key === 'Escape' || event.key === 'Enter') {
+                    event.preventDefault(); // Evita comportamientos por defecto del navegador
+                    forceCloseModal();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

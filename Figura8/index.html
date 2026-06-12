@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Conceptual Animado - Garantías Bancarias</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden; /* Evita barras de desplazamiento durante la animación */
+        }
+
+        .map-container {
+            display: flex;
+            align-items: center;
+            gap: 45px;
+            position: relative;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* Columnas del mapa */
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            justify-content: center;
+            position: relative;
+        }
+
+        .column-1 { width: 25%; }
+        .column-2 { width: 35%; }
+        .column-3 { width: 40%; }
+
+        /* Estilo base de las tarjetas */
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.45;
+            color: #333333;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            box-sizing: border-box;
+            
+            /* Configuración de la animación base */
+            opacity: 0;
+            animation: entradaIzquierda 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* Tarjeta Azul */
+        .card-blue { border: 4px solid #1f6cb0; }
+
+        /* Tarjetas Naranjas */
+        .card-orange { border: 4px solid #fcae3b; }
+
+        /* Tarjetas Verdes */
+        .card-green { border: 4px solid #99ca53; }
+
+
+        /* --- REGLAS DE ANIMACIÓN (TIEMPOS Y RETRASOS) --- */
+
+        /* Columna 1 (Aparece primero) */
+        .column-1 .card {
+            animation-delay: 0.2s;
+        }
+
+        /* Columna 2 (Aparecen una tras otra de arriba a abajo) */
+        .column-2 .card:nth-child(1) { animation-delay: 0.8s; }
+        .column-2 .card:nth-child(2) { animation-delay: 1.0s; }
+        .column-2 .card:nth-child(3) { animation-delay: 1.2s; }
+
+        /* Columna 3 (Aparecen al final, una tras otra de arriba a abajo) */
+        .column-3 .card:nth-child(1) { animation-delay: 1.8s; }
+        .column-3 .card:nth-child(2) { animation-delay: 2.0s; }
+        .column-3 .card:nth-child(3) { animation-delay: 2.2s; }
+
+
+        /* --- ANIMACIÓN DE LAS LÍNEAS CONECTORAS --- */
+        
+        /* Las líneas aparecen con un desvanecimiento después de sus respectivas tarjetas */
+        .column-1::after, .column-2::before, .column-2 .card::before, .column-2 .card::after {
+            opacity: 0;
+            animation: fadeInLíneas 0.5s ease-in forwards;
+            animation-delay: 1.5s;
+        }
+
+        .connect-from-pagare, .column-3::before, .column-3 .card::before, .column-3 .card::after {
+            opacity: 0;
+            animation: fadeInLíneas 0.5s ease-in forwards;
+            animation-delay: 2.5s;
+        }
+
+
+        /* --- KEYFRAMES --- */
+
+        /* Efecto de desplazamiento desde la izquierda y aparición */
+        @keyframes entradaIzquierda {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Efecto de aparición simple para los conectores */
+        @keyframes fadeInLíneas {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+
+        /* --- DISEÑO DE LOS CONECTORES (ESTÁTICO) --- */
+        .column-1::after {
+            content: "";
+            position: absolute;
+            right: -47px;
+            top: 50%;
+            width: 25px;
+            height: 2px;
+            background-color: #666;
+        }
+
+        .column-2::before {
+            content: "";
+            position: absolute;
+            left: -22px;
+            top: 14%;
+            bottom: 14%;
+            width: 2px;
+            background-color: #666;
+        }
+
+        .column-2 .card::before {
+            content: "";
+            position: absolute;
+            left: -22px;
+            top: 50%;
+            width: 22px;
+            height: 2px;
+            background-color: #666;
+        }
+
+        .column-2 .card::after {
+            content: "";
+            position: absolute;
+            left: -26px;
+            top: calc(50% - 4px);
+            width: 8px;
+            height: 8px;
+            background-color: #666;
+            border-radius: 50%;
+        }
+
+        .connect-from-pagare {
+            position: absolute;
+            right: -47px;
+            bottom: 60px;
+            width: 25px;
+            height: 2px;
+            background-color: #666;
+        }
+
+        .column-3::before {
+            content: "";
+            position: absolute;
+            left: -22px;
+            top: 15%;
+            bottom: 15%;
+            width: 2px;
+            background-color: #666;
+        }
+
+        .column-3 .card::before {
+            content: "";
+            position: absolute;
+            left: -22px;
+            top: 50%;
+            width: 22px;
+            height: 2px;
+            background-color: #666;
+        }
+
+        .column-3 .card::after {
+            content: "";
+            position: absolute;
+            left: -26px;
+            top: calc(50% - 4px);
+            width: 8px;
+            height: 8px;
+            background-color: #666;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="map-container">
+        
+        <!-- COLUMNA 1: Azul -->
+        <div class="column column-1">
+            <div class="card card-blue">
+                En las garantías siempre hay una silenciosa lucha entre el banco y el cliente. La garantía debe ser correlativa a la capacidad de pago.
+            </div>
+        </div>
+
+        <!-- COLUMNA 2: Naranja -->
+        <div class="column column-2">
+            <div class="card card-orange">
+                Si un cliente tiene una capacidad de pago demostrable y sólida, requerirá de menores exigencias de garantías.
+            </div>
+            <div class="card card-orange">
+                Si los flujos de caja son muy ajustados, deben existir más garantías; por ende, el crédito será más caro.
+            </div>
+            <div class="card card-orange">
+                <strong>El pagaré</strong> es una promesa de pago incondicional de una suma de dinero y sus intereses en una fecha futura.
+            </div>
+            <div class="connect-from-pagare"></div>
+        </div>
+
+        <!-- COLUMNA 3: Verde -->
+        <div class="column column-3">
+            <div class="card card-green">
+                Los bancos optan por pagarés en blanco con carta de instrucciones, que la entidad diligenciará con el valor de la mora para iniciar el proceso judicial.
+            </div>
+            <div class="card card-green">
+                <strong>El fiador</strong> es quien respalda la deuda en caso de que el acreedor no logre el cobro de la obligación al deudor principal.
+            </div>
+            <div class="card card-green">
+                <strong>El deudor solidario</strong> tiene las mismas responsabilidades que el principal. En este caso, el banco podrá perseguir al solidario y no al principal si así lo desea.
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

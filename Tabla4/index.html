@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparativa Préstamo vs Créditos - Poppins</title>
+    <style>
+        /* Importación de la fuente Poppins desde Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Centrado absoluto en la pantalla */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        /* Contenedor principal de la tabla */
+        .table-container {
+            width: 100%;
+            max-width: 1000px;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        .custom-table {
+            border-collapse: separate;
+            border-spacing: 8px 0; /* Espaciado horizontal optimizado */
+            width: 100%;
+        }
+
+        /* Animación de entrada fluida */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Clase base para la animación por columnas */
+        .animated-col {
+            opacity: 0; 
+            animation: fadeInUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* Delays escalonados para las dos columnas */
+        .col-1 { animation-delay: 0.1s; }
+        .col-2 { animation-delay: 0.3s; }
+
+        /* Estilos de los Encabezados */
+        .custom-table th {
+            background-color: #0b4c4f;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 16px 12px;
+            border-radius: 6px 6px 0 0;
+            text-align: center;
+            border-bottom: 4px solid #f9f9f9;
+        }
+
+        /* Estilos base de las celdas de contenido */
+        .custom-table td {
+            background-color: #ffffff;
+            color: #111111;
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 24px;
+            vertical-align: top;
+            text-align: left;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+            border-radius: 0 0 6px 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        /* Estilos para las listas con viñeta de rombo personalizado (◆) */
+        .custom-table ul {
+            list-style: none;
+            margin: 0 0 16px 0;
+            padding: 0;
+        }
+
+        .custom-table li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+
+        .custom-table li::before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            color: #5ba4a4; /* Color azul claro/verdoso de los rombos */
+            font-size: 12px;
+            top: 1px;
+        }
+
+        .custom-table li:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight-title {
+            color: #5ba4a4;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .paragraph-spacing {
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th style="width: 50%;" class="animated-col col-1">Prestamo</th>
+                    <th style="width: 50%;" class="animated-col col-2">Creditos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="animated-col col-1">
+                        <ul>
+                            <li>Es una transacción materializada en la que el banco entrega al cliente un monto fijo de dinero en un solo desembolso.</li>
+                            <li>El cliente se compromete a devolver ese dinero en un plazo determinado, pagando capital más intereses (cuota).</li>
+                        </ul>
+                        <div class="paragraph-spacing">
+                            El préstamo es útil para financiar inversiones fijas y de largo plazo.
+                        </div>
+                        <div class="highlight-title">Ejemplos:</div>
+                        <div>
+                            hipotecas, préstamos de libre inversión, préstamos para maquinaria o vehículos.
+                        </div>
+                    </td>
+                    
+                    <td class="animated-col col-2">
+                        <ul>
+                            <li>Es un cupo de dinero aprobado por el banco, que queda a disposición del cliente y puede usarse total o parcialmente según la necesidad.</li>
+                            <li>Los intereses se generan únicamente sobre el monto utilizado, en el plazo pactado y con la tasa disponible en el momento de la transacción.</li>
+                        </ul>
+                        <div class="paragraph-spacing">
+                            El crédito es más flexible para atender necesidades de capital de trabajo y flujo de caja.
+                        </div>
+                        <div class="highlight-title">Ejemplos:</div>
+                        <div>
+                            hipotecas, préstamos de libre inversión, préstamos para maquinaria o vehículos.
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

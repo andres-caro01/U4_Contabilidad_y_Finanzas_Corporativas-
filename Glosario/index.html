@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glosario de Evaluación de Proyectos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- VARIABLES DE COLOR ACTUALIZADAS --- */
+        :root {
+            --primary-brand: #054C50;
+            --bg-light: #ececec;
+            --text-dark: #333333;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: radial-gradient(#d0d0d0 1px, transparent 1px);
+            background-size: 10px 10px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .glossary-widget {
+            width: 100%;
+            max-width: 900px;
+            background: transparent;
+            position: relative; 
+        }
+
+        .instruction-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .instruction-badge {
+            background-color: var(--primary-brand);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulse-attention 2s infinite;
+        }
+
+        @keyframes pulse-attention {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(5, 76, 80, 0.4); }
+            70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(5, 76, 80, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(5, 76, 80, 0); }
+        }
+
+        .glossary-header {
+            background-color: var(--primary-brand);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .glossary-header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .glossary-body {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start; 
+        }
+
+        .tabs-container {
+            display: flex;
+            flex-direction: column;
+            width: 140px;
+            flex-shrink: 0;
+            background-color: var(--primary-brand);
+            border-radius: 15px;
+            padding: 10px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px; 
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--white);
+            border: none;
+            padding: 15px 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            outline: none;
+        }
+
+        .tab-btn:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .tab-btn.active {
+            background-color: var(--bg-light);
+            color: var(--primary-brand);
+            border-radius: 5px 0 0 5px;
+        }
+
+        .content-area {
+            flex-grow: 1;
+            background-color: var(--bg-light);
+            border-radius: 15px;
+            padding: 40px;
+            min-height: 450px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .definition-item {
+            margin-bottom: 30px;
+            padding-left: 20px;
+            border-left: 5px solid var(--primary-brand);
+        }
+
+        .definition-item h3 {
+            color: var(--primary-brand);
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .definition-item p {
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            text-align: left;
+        }
+
+        .hidden { display: none; }
+
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in .definition-item {
+            animation: slideUpFade 0.5s ease-out forwards;
+            opacity: 0; 
+        }
+
+        .animate-in .definition-item:nth-child(n) { animation-delay: 0.1s; }
+
+        @media (max-width: 768px) {
+            .glossary-body { flex-direction: column; }
+            .tabs-container { width: 100%; flex-direction: row; position: static; }
+            .tab-btn { flex: 1; border-bottom: none; border-right: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
+            .tab-btn.active { border-radius: 10px 10px 0 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="glossary-widget">
+    <div class="instruction-wrapper">
+        <div class="instruction-badge">
+            <span>👆</span> Haga Clic para ampliar la información
+        </div>
+    </div>
+
+    <div class="glossary-header">
+        <h1>Glosario de la unidad</h1>
+    </div>
+
+    <div class="glossary-body">
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="filterContent('A-I', this)">A – I</button>
+            <button class="tab-btn" onclick="filterContent('J-Q', this)">J – Q</button>
+            <button class="tab-btn" onclick="filterContent('R-Z', this)">R – Z</button>
+        </div>
+
+        <div class="content-area">
+            <div class="content-group animate-in" id="group-A-I">
+                <div class="definition-item">
+                    <h3>Amortización</h3>
+                    <p>Proceso financiero que consiste en devolver de manera progresiva el capital prestado junto con los intereses, mediante cuotas periódicas que se establecen bajo condiciones específicas de plazo y tasa de interés.</p>
+                </div>
+                <div class="definition-item">
+                    <h3>Costo de capital (Ke)</h3>
+                    <p>Rendimiento mínimo que un proyecto o empresa debe generar para compensar a los inversionistas y acreedores por los recursos aportados, por invertir o suministrar recursos para la puesta en marcha del negocio.</p>
+                </div>
+                <div class="definition-item">
+                    <h3>Costo de la deuda (Kd)</h3>
+                    <p>Tasa efectiva que paga una organización por el dinero obtenido a través de préstamos o créditos, considerando el beneficio fiscal derivado de la deducción de los intereses.</p>
+                </div>
+                <div class="definition-item">
+                    <h3>Deuda</h3>
+                    <p>Compromiso financiero que asume una persona o empresa con terceros, el cual puede establecerse a corto o largo plazo, de acuerdo con las condiciones pactadas de pago y de interés.</p>
+                </div>
+                <div class="definition-item">
+                    <h3>Estados financieros</h3>
+                    <p>Son informes contables que muestran la situación económica, financiera y patrimonial de una empresa en un periodo específico, con el fin de servir como base para la toma de decisiones.</p>
+                </div>
+                <div class="definition-item">
+                    <h3>Flujo de caja</h3>
+                    <p>Proyección de los ingresos y egresos de dinero asociados a un proyecto durante su vida útil. Constituye un insumo esencial para determinar la viabilidad financiera y el nivel de rentabilidad esperada.</p>
+                </div>
+                <div class="definition-item">
+                    <h3>Interés</h3>
+                    <p>Es la compensación económica que se paga o se recibe por disponer de una suma de dinero durante un periodo específico. Esta remuneración refleja el valor del dinero en el tiempo, dado que contar con recursos en el presente no equivale a disponer de ellos en el futuro.</p>
+                </div>
+            </div>
+
+            <div class="content-group hidden" id="group-J-Q">
+                <div class="definition-item">
+                    <h3>Periodo de gracia</h3>
+                    <p>Intervalo de tiempo en el que el deudor no está obligado a cubrir el capital del préstamo, sino únicamente los intereses. Puede concederse de manera parcial o total según lo pactado con la entidad financiera.</p>
+                </div>
+            </div>
+
+            <div class="content-group hidden" id="group-R-Z">
+                <div class="definition-item">
+                    <h3>Rentabilidad</h3>
+                    <p>Medida que refleja la ganancia obtenida a partir de una inversión de capital, expresada normalmente como un porcentaje que relaciona la utilidad generada con los recursos invertidos.</p>
+                </div>
+                <div class="definition-item">
+                    <h3>Riesgo</h3>
+                    <p>Probabilidad de que un evento futuro e incierto genere impactos adversos en un proyecto, organización o inversión, afectando su desempeño financiero, operativo o material.</p>
+                </div>
+                <div class="definition-item">
+                    <h3>Tasa de interés efectiva o periódica</h3>
+                    <p>Tasa que incorpora el efecto del interés compuesto, pues refleja el resultado de la reinversión de los intereses en intervalos regulares.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function filterContent(groupId, btnElement) {
+        const groups = document.querySelectorAll('.content-group');
+        groups.forEach(group => {
+            group.classList.add('hidden');
+            group.classList.remove('animate-in');
+        });
+
+        const selectedGroup = document.getElementById('group-' + groupId);
+        if (selectedGroup) {
+            selectedGroup.classList.remove('hidden');
+            void selectedGroup.offsetWidth; 
+            selectedGroup.classList.add('animate-in');
+        }
+
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
+</script>
+
+</body>
+</html>

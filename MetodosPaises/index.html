@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas de Amortización - Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            /* Colores de acento modernos (Neon Neumorphism) */
+            --american-glow: rgba(244, 63, 94, 0.15);
+            --american-border: #f43f5e;
+            
+            --german-glow: rgba(16, 185, 129, 0.15);
+            --german-border: #10b981;
+            
+            --french-glow: rgba(14, 165, 233, 0.15);
+            --french-border: #0ea5e9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            overflow-x: hidden;
+            color: var(--text-main);
+        }
+
+        /* Instrucción flotante moderna */
+        .instruction {
+            margin-bottom: 3.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 0.8rem 2rem;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        .instruction .icon {
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Contenedor de las tarjetas en línea */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columnas exactas */
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            perspective: 2000px; /* Profundidad 3D mejorada */
+        }
+
+        /* Ajuste responsivo para celulares */
+        @media (max-width: 968px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+        }
+
+        /* Estructura de la tarjeta Flip */
+        .flip-card {
+            background-color: transparent;
+            height: 420px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: left;
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: 24px;
+        }
+
+        /* Clase activa que ejecuta el giro */
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Efectos Hover previos al click */
+        .flip-card:not(.flipped):hover .flip-card-inner {
+            transform: translateY(-12px) scale(1.02);
+        }
+
+        .card-american:not(.flipped):hover .flip-card-inner { box-shadow: 0 20px 40px var(--american-glow); }
+        .card-german:not(.flipped):hover .flip-card-inner { box-shadow: 0 20px 40px var(--german-glow); }
+        .card-french:not(.flipped):hover .flip-card-inner { box-shadow: 0 20px 40px var(--french-glow); }
+
+        /* Caras de la tarjeta */
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            transition: border-color 0.3s ease;
+        }
+
+        /* Líneas de acento superiores */
+        .card-american .flip-card-front { border-top: 4px solid var(--american-border); }
+        .card-german .flip-card-front { border-top: 4px solid var(--german-border); }
+        .card-french .flip-card-front { border-top: 4px solid var(--french-border); }
+
+        .flip-card-front {
+            justify-content: space-between;
+        }
+
+        /* Etiquetas Minimalistas */
+        .tag {
+            align-self: flex-start;
+            padding: 0.35rem 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-american .tag { background: rgba(244, 63, 94, 0.1); color: var(--american-border); border: 1px solid rgba(244, 63, 94, 0.2); }
+        .card-german .tag { background: rgba(16, 185, 129, 0.1); color: var(--german-border); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .card-french .tag { background: rgba(14, 165, 233, 0.1); color: var(--french-border); border: 1px solid rgba(14, 165, 233, 0.2); }
+
+        .title {
+            font-size: 1.6rem;
+            color: var(--text-main);
+            font-weight: 600;
+            line-height: 1.4;
+            margin-top: 1.5rem;
+            margin-bottom: auto;
+            letter-spacing: -0.5px;
+        }
+
+        /* Indicador interactivo con icono SVG integrado */
+        .action-hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .action-hint svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .flip-card:hover .action-hint {
+            color: var(--text-main);
+        }
+
+        .flip-card:hover .action-hint svg {
+            transform: translateX(6px);
+        }
+
+        /* Cara Trasera */
+        .flip-card-back {
+            transform: rotateY(180deg);
+            justify-content: space-between;
+        }
+
+        .card-american .flip-card-back { border: 1px solid rgba(244, 63, 94, 0.3); background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(244, 63, 94, 0.03) 100%); }
+        .card-german .flip-card-back { border: 1px solid rgba(16, 185, 129, 0.3); background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(16, 185, 129, 0.03) 100%); }
+        .card-french .flip-card-back { border: 1px solid rgba(14, 165, 233, 0.3); background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(14, 165, 233, 0.03) 100%); }
+
+        .back-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 1rem;
+        }
+
+        .description {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-weight: 300;
+            margin-top: 1.5rem;
+            margin-bottom: auto;
+        }
+
+        .back-action-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="instruction">
+        <span class="icon">✨</span> Haga clic sobre la tarjeta para ampliar la información
+    </div>
+
+    <div class="cards-container">
+
+        <div class="flip-card card-american" onclick="toggleFlip(this)">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <span class="tag">Mayor costo</span>
+                    <h2 class="title">Método Americano</h2>
+                    <div class="action-hint">
+                        <span>Descubrir método</span>
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                </div>
+                <div class="flip-card-back">
+                    <h3 class="back-title">Estructura Americana</h3>
+                    <p class="description">Los intereses más altos corresponden al método americano, ya que durante todo el periodo del préstamo los intereses se calculan siempre sobre el capital inicial.</p>
+                    <div class="back-action-hint">Haz click para cerrar</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card card-german" onclick="toggleFlip(this)">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <span class="tag">Menor costo</span>
+                    <h2 class="title">Método Alemán</h2>
+                    <div class="action-hint">
+                        <span>Descubrir método</span>
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                </div>
+                <div class="flip-card-back">
+                    <h3 class="back-title">Sistema Alemán</h3>
+                    <p class="description">El método alemán resulta ser el más económico, pues contempla un abono constante al capital en cada periodo, lo que reduce rápidamente el saldo y, por ende, el valor de los intereses.</p>
+                    <div class="back-action-hint">Haz click para cerrar</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card card-french" onclick="toggleFlip(this)">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <span class="tag">Cuotas fijas</span>
+                    <h2 class="title">Método Francés</h2>
+                    <div class="action-hint">
+                        <span>Descubrir método</span>
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                </div>
+                <div class="flip-card-back">
+                    <h3 class="back-title">Esquema Francés</h3>
+                    <p class="description">El método francés mantiene cuotas fijas a lo largo del crédito. Al inicio se paga una mayor proporción de intereses y hacia el final se incrementa el abono a capital.</p>
+                    <div class="back-action-hint">Haz click para cerrar</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleFlip(card) {
+            card.classList.toggle('flipped');
+        }
+    </script>
+</body>
+</html>

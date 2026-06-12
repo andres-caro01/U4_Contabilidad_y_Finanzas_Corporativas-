@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado de Divisas - Poppins</title>
+    <style>
+        /* Importación de la fuente Poppins desde Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Centrado absoluto en la pantalla */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        /* Contenedor principal de la tabla */
+        .table-container {
+            width: 100%;
+            max-width: 1100px;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        .custom-table {
+            border-collapse: separate;
+            border-spacing: 3px 0; /* Espaciado horizontal compacto optimizado */
+            width: 100%;
+        }
+
+        /* Animación de entrada fluida */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Clase base para la animación por columnas */
+        .animated-col {
+            opacity: 0; 
+            animation: fadeInUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* Delays escalonados de izquierda a derecha */
+        .col-1 { animation-delay: 0.1s; }
+        .col-2 { animation-delay: 0.3s; }
+
+        /* Estilos de los Encabezados */
+        .custom-table th {
+            background-color: #0b4c4f;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px 12px;
+            border-radius: 6px 6px 0 0;
+            text-align: center;
+            border-bottom: 4px solid #f9f9f9;
+        }
+
+        /* Estilos base de las celdas de contenido */
+        .custom-table td {
+            color: #111111;
+            font-size: 14px;
+            line-height: 1.5;
+            padding: 14px 18px;
+            vertical-align: middle;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 4px solid #f9f9f9; /* Simula separación entre filas */
+        }
+
+        /* Columna de Aspecto (Alineación centrada y texto Semibold) */
+        .custom-table td.aspect-title {
+            text-align: center;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Columna de Contenido (Alineación a la izquierda para textos largos) */
+        .custom-table td.content-cell {
+            text-align: left;
+        }
+
+        /* Filas Blancas */
+        .row-white td {
+            background-color: #ffffff;
+        }
+
+        /* Filas Tintadas Intercaladas */
+        .row-tinted td {
+            background-color: #e9f1f1;
+        }
+
+        /* Última fila con bordes redondeados inferiores */
+        .row-last td {
+            border-bottom: 1px solid #e0e0e0;
+            border-radius: 0 0 6px 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;" class="animated-col col-1">Aspecto</th>
+                    <th style="width: 70%;" class="animated-col col-2">Mercado de Divisa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="row-white">
+                    <td class="animated-col col-1 aspect-title">Naturaleza</td>
+                    <td class="animated-col col-2 content-cell">
+                        Mercado electrónico donde se compran y venden divisas (Forex) tanto al contado como a futuro.
+                    </td>
+                </tr>
+                <tr class="row-tinted">
+                    <td class="animated-col col-1 aspect-title">Duración de operaciones</td>
+                    <td class="animated-col col-2 content-cell">
+                        Opera 24 horas al día, 5 días a la semana.
+                    </td>
+                </tr>
+                <tr class="row-white">
+                    <td class="animated-col col-1 aspect-title">Instrumentos</td>
+                    <td class="animated-col col-2 content-cell">
+                        Divisas (ej. USD, EUR, GBP, COP), tanto en mercados spot como futuros.
+                    </td>
+                </tr>
+                <tr class="row-tinted row-last">
+                    <td class="animated-col col-1 aspect-title">Participantes principales</td>
+                    <td class="animated-col col-2 content-cell">
+                        Bancos centrales, bancos comerciales, gestores de inversión, empresas, particulares.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

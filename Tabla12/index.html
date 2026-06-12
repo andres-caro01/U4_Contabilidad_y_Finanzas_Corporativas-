@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Amortización - Gracia Total</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #004d4d;
+            --bg-light: #e0ebeb;
+            --bg-white: #ffffff;
+            --text-color: #333333;
+            --border-color: #d1e0e0;
+            --negative-color: #e60000;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f7;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .table-container {
+            width: 100%;
+            max-width: 1100px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+            overflow: hidden;
+            background-color: var(--bg-white);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th, td {
+            padding: 14px 10px;
+            font-size: 13.5px;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            line-height: 1.4;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        /* --- CONTROL DE PROPORCIÓN DE COLUMNAS --- */
+        th:nth-child(1) { width: 14%; } /* n (Cuota) */
+        th:nth-child(2) { width: 18%; } /* Cuota */
+        th:nth-child(3) { width: 17%; } /* Interés */
+        th:nth-child(4) { width: 17%; } /* Abono a Capital */
+        th:nth-child(5) { width: 17%; } /* Saldo */
+        th:nth-child(6) { width: 17%; } /* Flujo de Caja */
+
+        /* --- ENCABEZADOS --- */
+        thead th {
+            background-color: var(--primary-color);
+            color: var(--bg-white);
+            font-weight: 600;
+            font-size: 14px;
+            padding: 16px 10px;
+            animation: slideDown 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+
+        /* --- ESTILOS DE TEXTO FINANCIEROS --- */
+        .text-bold {
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .text-link {
+            text-decoration: underline;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .text-negative {
+            color: var(--negative-color);
+            font-weight: 600;
+        }
+
+        /* Alternancia de color en las filas (Zebra Striping) */
+        tbody tr:nth-child(even) td {
+            background-color: var(--bg-light);
+        }
+        tbody tr:nth-child(odd) td {
+            background-color: var(--bg-white);
+        }
+
+        /* --- ANIMACIONES --- */
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        tbody tr {
+            opacity: 0;
+            animation: fadeInUp 0.45s ease forwards;
+        }
+
+        /* Retrasos de carga secuencial progresiva */
+        tbody tr:nth-child(1) { animation-delay: 0.05s; }
+        tbody tr:nth-child(2) { animation-delay: 0.10s; }
+        tbody tr:nth-child(3) { animation-delay: 0.15s; }
+        tbody tr:nth-child(4) { animation-delay: 0.20s; }
+        tbody tr:nth-child(5) { animation-delay: 0.25s; }
+        tbody tr:nth-child(6) { animation-delay: 0.30s; }
+        tbody tr:nth-child(7) { animation-delay: 0.35s; }
+        tbody tr:nth-child(8) { animation-delay: 0.40s; }
+        tbody tr:nth-child(9) { animation-delay: 0.45s; }
+
+        /* Efecto de interacción hover */
+        tbody tr:hover td {
+            background-color: rgba(0, 77, 77, 0.04) !important;
+            transition: background-color 0.15s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>n (Cuota)</th>
+                    <th>Cuota</th>
+                    <th>Interés</th>
+                    <th>Abono a Capital</th>
+                    <th>Saldo</th>
+                    <th>Flujo de Caja</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>$ 100.000.000</td>
+                    <td class="text-negative">-$ 100.000.000</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td class="text-link">$ 0</td>
+                    <td class="text-link">$ 1.833.333</td>
+                    <td>$ 0</td>
+                    <td>$ 101.833.333</td>
+                    <td class="text-link">$ 0</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="text-link">$ 0</td>
+                    <td class="text-link">$ 1.866.944</td>
+                    <td>$ 0</td>
+                    <td>$ 103.700.278</td>
+                    <td class="text-link">$ 0</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>$ 18.409.183</td>
+                    <td>$ 1.901.172</td>
+                    <td>$ 16.508.011</td>
+                    <td>$ 87.192.267</td>
+                    <td>$ 18.409.183</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>$ 18.409.183</td>
+                    <td>$ 1.598.525</td>
+                    <td>$ 16.810.658</td>
+                    <td>$ 70.381.609</td>
+                    <td>$ 18.409.183</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>$ 18.409.183</td>
+                    <td>$ 1.290.329</td>
+                    <td>$ 17.118.853</td>
+                    <td>$ 53.262.755</td>
+                    <td>$ 18.409.183</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>$ 18.409.183</td>
+                    <td>$ 976.484</td>
+                    <td>$ 17.432.699</td>
+                    <td>$ 32.830.056</td>
+                    <td>$ 18.409.183</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>$ 18.409.183</td>
+                    <td>$ 656.884</td>
+                    <td>$ 17.752.299</td>
+                    <td>$ 18.077.757</td>
+                    <td>$ 18.409.183</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>$ 18.409.183</td>
+                    <td>$ 331.426</td>
+                    <td>$ 18.077.757</td>
+                    <td class="text-bold">$ 0</td>
+                    <td>$ 18.409.183</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

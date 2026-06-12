@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjetas Interactivas de Gestión de Riesgos</title>
+    <style>
+        /* --- Configuración Global --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f7f7;
+            color: #333333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem 2rem 2rem; /* Espacio superior para el letrero flotante */
+            position: relative;
+        }
+
+        h1 {
+            color: #054C50;
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        /* --- Instrucción Flotante --- */
+        .floating-instruction {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #054C50;
+            color: #ffffff;
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(5, 76, 80, 0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); box-shadow: 0 5px 20px rgba(5, 76, 80, 0.5); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Contenedor Flex/Grid Centrado --- */
+        .grid-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Esto centra las tarjetas sobrantes en la última fila */
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* --- Tarjeta con Efecto de Giro 3D --- */
+        .card {
+            background-color: transparent;
+            height: 380px;
+            width: 100%;
+            max-width: 350px; /* Tamaño ideal y uniforme para cada tarjeta */
+            perspective: 1200px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: left;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(5, 76, 80, 0.08);
+        }
+
+        .card.is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* --- Estilos de las Caras (Frente y Reverso) --- */
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(5, 76, 80, 0.15);
+        }
+
+        .card-front {
+            background-color: #ffffff;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .card-front {
+            border-color: #054C50;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(5, 76, 80, 0.15);
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(5, 76, 80, 0.05);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: #054C50;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .icon-wrapper {
+            transform: scale(1.1);
+            background-color: #054C50;
+            color: #ffffff;
+        }
+
+        .card-front h2 {
+            font-size: 1.5rem;
+            color: #054C50;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .click-hint {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-back {
+            background-color: #054C50;
+            color: #ffffff;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            justify-content: flex-start;
+        }
+
+        .card-back::-webkit-scrollbar {
+            width: 6px;
+        }
+        .card-back::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .card-back h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .card-back p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-weight: 300;
+            text-align: left;
+        }
+
+        .subrayado-cursiva {
+            text-decoration: underline;
+            font-style: italic;
+        }
+
+        /* Ajuste responsive para pantallas pequeñas */
+        @media (max-width: 600px) {
+            .floating-instruction {
+                position: static;
+                margin-bottom: 1.5rem;
+                animation: none;
+            }
+            body {
+                padding-top: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="floating-instruction">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/></svg>
+        Haga clic sobre las tarjetas para ampliar la informacion
+    </div>
+
+    <h1>Conceptos de Evaluación Financiera</h1>
+
+    <div class="grid-container">
+
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon-wrapper">
+                        <svg width="40" height="40" fill="currentColor" viewBox="0 0 16 16"><path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/></svg>
+                    </div>
+                    <h2>Incertidumbre</h2>
+                    <span class="click-hint">Haz clic para revelar</span>
+                </div>
+                <div class="card-back">
+                    <h2>Incertidumbre</h2>
+                    <p>siempre existe al proyectar flujos de efectivo, tasas de interés, inflación o costos y ventas de construcción. La incertidumbre es el punto de partida, ya que refleja que no es posible conocer con exactitud los resultados futuros del proyecto.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon-wrapper">
+                        <svg width="40" height="40" fill="currentColor" viewBox="0 0 16 16"><path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06c-.01.01-.1.061-.266.061H1.343c-.165 0-.256-.051-.266-.06a.2.2 0 0 1-.054-.06.18.18 0 0 1 .003-.183L7.884 2.073a.15.15 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/></svg>
+                    </div>
+                    <h2>Riesgo</h2>
+                    <span class="click-hint">Haz clic para revelar</span>
+                </div>
+                <div class="card-back">
+                    <h2>Riesgo</h2>
+                    <p>ü surge al intentar cuantificar esa incertidumbre. En la evaluación financiera de proyectos, el riesgo se traduce en medir cómo variables como el VPN, la TIR o los flujos de caja pueden cambiar si varían las tasas de interés, la inflación o las tasas impositivas.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon-wrapper">
+                        <svg width="40" height="40" fill="currentColor" viewBox="0 0 16 16"><path d="M6.002 5.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zM8.5 8a.5.5 0 0 0-1 0v3.5a.5.5 0 0 0 1 0V8z"/><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg>
+                    </div>
+                    <h2>Amenaza</h2>
+                    <span class="click-hint">Haz clic para revelar</span>
+                </div>
+                <div class="card-back">
+                    <h2>Amenaza</h2>
+                    <p>representa un posible evento negativo que puede afectar los resultados del proyecto (ej., una subida inesperada en el IBR o un aumento de inflación). Identificar amenazas permite anticipar escenarios adversos.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon-wrapper">
+                        <svg width="40" height="40" fill="currentColor" viewBox="0 0 16 16"><path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/><path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/></svg>
+                    </div>
+                    <h2>Vulnerabilidad</h2>
+                    <span class="click-hint">Haz clic para revelar</span>
+                </div>
+                <div class="card-back">
+                    <h2>Vulnerabilidad</h2>
+                    <p>ü es la susceptibilidad que tiene el proyecto frente a dichas amenazas. Por ejemplo, un proyecto con altos niveles de endeudamiento es más vulnerable a incrementos en las tasas de interés.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon-wrapper">
+                        <svg width="40" height="40" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.8 11.8 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7 7 0 0 0 1.048-.625 11.8 11.8 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.54 1.54 0 0 0-1.044-1.263 63 63 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm0 5a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 5 11V9a1.5 1.5 0 0 1 1.5-1.5v-1A1.5 1.5 0 0 1 8 5zm-1 3.121V11h2V8.121c0-.067-.054-.121-.121-.121H7.121c-.067 0-.121.054-.121.121zM8 6a.5.5 0 0 0-.5.5v1h1v-1A.5.5 0 0 0 8 6z"/></svg>
+                    </div>
+                    <h2>Seguridad</h2>
+                    <span class="click-hint">Haz clic para revelar</span>
+                </div>
+                <div class="card-back">
+                    <h2>Seguridad</h2>
+                    <p>se logra cuando los riesgos, amenazas y vulnerabilidades están gestionados y controlados. En proyectos financieros, esto se traduce en diseñar coberturas, planes de contingencia y <span class="subrayado-cursiva">simulaciones</span> de escenarios que permitan reducir el impacto de las variaciones externas (Ortiz, 2019).</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('is-flipped');
+        }
+    </script>
+</body>
+</html>

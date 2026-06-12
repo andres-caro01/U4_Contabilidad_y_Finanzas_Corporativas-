@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrusel 3D - Tipos de Garantías</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --primary-color: #004d40;
+            --accent-color: #00bfa5;
+            --text-dark: #333333;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            perspective: 1000px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 50px;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Instrucción Flotante */
+        .instruccion-flotante {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 77, 64, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            pointer-events: none;
+            animation: bounce 2s infinite;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Contenedor del Carrusel 3D */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel {
+            position: relative;
+            width: 320px;
+            height: 400px;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Tarjetas */
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            backface-visibility: hidden;
+            transition: transform 0.6s, opacity 0.6s, box-shadow 0.3s;
+            border-top: 5px solid var(--primary-color);
+        }
+
+        /* Efecto Hover en las tarjetas */
+        .card:hover {
+            box-shadow: 0 20px 40px rgba(0, 191, 165, 0.25);
+            transform: scale(1.03) !important; /* Mantiene la escala base del JS pero añade el toque */
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5s);
+            color: var(--accent-color);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: auto;
+        }
+
+        .btn-more {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 15px;
+        }
+
+        .btn-more:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Controles de Navegación */
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            background: white;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Vista de Detalle / Modal Flotante (Efecto de Entrada Extendido) */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 550px;
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            position: relative;
+            transform: scale(0.7) translateY(100px);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 8px solid var(--primary-color);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #eee;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .close-modal:hover {
+            background: #ff5252;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-body h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .modal-body div {
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .modal-body ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="instruccion-flotante">
+        <i class="fa-solid fa-hand-pointer"></i>
+        <span>Haga clic sobre los botones para interactuar y ampliar la información.</span>
+    </div>
+
+    <h1>Garantías Financieras y Corporativas</h1>
+
+    <div class="carousel-container">
+        <div class="carousel" id="carousel">
+            
+            <div class="card" data-index="0">
+                <i class="fa-solid fa-house-chimney card-icon"></i>
+                <h3>Garantías Reales</h3>
+                <p>Son bienes tangibles o derechos que se entregan como respaldo.</p>
+                <button class="btn-more">Ver detalles</button>
+                <div class="hidden-info" style="display:none;">
+                    <p>Son bienes tangibles o derechos que se entregan como respaldo.</p>
+                    <br>
+                    <p><span class="highlight">Ejemplos:</span></p>
+                    <ul>
+                        <li><span class="highlight">Hipoteca:</span> inmuebles como terrenos, lotes o edificios.</li>
+                        <li><span class="highlight">Prenda o pignoración:</span> bienes muebles como maquinaria, vehículos o equipos de construcción.</li>
+                        <li><span class="highlight">Títulos valores:</span> CDT, bonos u otros activos financieros.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" data-index="1">
+                <i class="fa-solid fa-shield-halved card-icon"></i>
+                <h3>Fondo Nacional de Garantías</h3>
+                <p>Dirigido a micro, pequeñas, medianas empresas y personas naturales.</p>
+                <button class="btn-more">Ver detalles</button>
+                <div class="hidden-info" style="display:none;">
+                    <ul>
+                        <li>Dirigido a micro, pequeñas, medianas empresas y personas naturales, el fondo es un deudor solidario de la obligación, garantizando el 80-90% del pago del crédito. <dfn><i>(préstele que yo respondo)</i></dfn></li>
+                        <br>
+                        <li>Pero, como nada es gratis. El fondo cobrará una comisión por cada año del crédito activo. Estas tasas pueden llegar al 3,4% anual anticipado.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" data-index="2">
+                <i class="fa-solid fa-users-rectangle card-icon"></i>
+                <h3>Firma Solidaria de Socios</h3>
+                <p>En el caso de sociedades, la limitación de responsabilidad está relacionada con los aportes de capital.</p>
+                <button class="btn-more">Ver detalles</button>
+                <div class="hidden-info" style="display:none;">
+                    <p>En el caso de sociedades, la limitación de responsabilidad está relacionada con los aportes de capital individual.</p>
+                    <br>
+                    <p>De manera que una entidad financiera puede requerir garantías adicionales, en caso de que la organización represente un riesgo de impago.</p>
+                </div>
+            </div>
+
+            <div class="card" data-index="3">
+                <i class="fa-solid fa-hand-holding-heart card-icon"></i>
+                <h3>Garantías Fiduciarias</h3>
+                <p>Se entregan mediante contratos de fiducia a una sociedad fiduciaria.</p>
+                <button class="btn-more">Ver detalles</button>
+                <div class="hidden-info" style="display:none;">
+                    <p>Se entregan mediante contratos de fiducia a una sociedad fiduciaria.</p>
+                    <br>
+                    <p><span class="highlight">Ejemplo:</span> fiducia en garantía, donde los ingresos de un proyecto inmobiliario se administran en un patrimonio autónomo que garantiza el pago del crédito.</p>
+                </div>
+            </div>
+
+            <div class="card" data-index="4">
+                <i class="fa-solid fa-user-shield card-icon"></i>
+                <h3>Garantías Personales</h3>
+                <p>Se basan en el respaldo de una persona natural o jurídica distinta al deudor principal.</p>
+                <button class="btn-more">Ver detalles</button>
+                <div class="hidden-info" style="display:none;">
+                    <p>Se basan en el respaldo de una persona natural o jurídica distinta al deudor principal.</p>
+                    <br>
+                    <p>Entre ellas se incluyen el <span class="highlight">codeudor o fiador</span>, que responde con su patrimonio en caso de incumplimiento, y el <span class="highlight">aval</span>, otorgado generalmente por una entidad financiera o aseguradora, que respalda el cumplimiento de las obligaciones <i>(Chu Rubio, 2019)</i>.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="nav-btn" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-body" id="modalBody">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const carousel = document.getElementById('carousel');
+        const cards = document.querySelectorAll('.card');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const modal = document.getElementById('infoModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalBody = document.getElementById('modalBody');
+
+        let currentIndex = 0;
+        const totalCards = cards.length;
+        // Ángulo de separación 3D por tarjeta
+        const theta = 360 / totalCards; 
+        // Radio matemático de separación tridimensional para el giro
+        const radius = Math.round((160 / Math.tan(Math.PI / totalCards))); 
+
+        function updateCarousel() {
+            cards.forEach((card, i) => {
+                const cardIndex = i - currentIndex;
+                // Calculamos la posición angular idónea
+                const angle = cardIndex * theta;
+                
+                // Lógica de visualización y profundidad 3D
+                if (i === currentIndex) {
+                    // Tarjeta activa al frente
+                    card.style.transform = `rotateY(${angle}deg) translateZ(${radius + 40}px)`;
+                    card.style.opacity = '1';
+                    card.style.zIndex = '10';
+                } else if (i === (currentIndex + 1) % totalCards || i === (currentIndex - 1 + totalCards) % totalCards) {
+                    // Tarjetas laterales inmediatas
+                    card.style.transform = `rotateY(${angle}deg) translateZ(${radius}px) scale(0.85)`;
+                    card.style.opacity = '0.7';
+                    card.style.zIndex = '5';
+                } else {
+                    // Tarjetas traseras ocultas/atenuadas
+                    card.style.transform = `rotateY(${angle}deg) translateZ(${radius - 50}px) scale(0.7)`;
+                    card.style.opacity = '0.2';
+                    card.style.zIndex = '1';
+                }
+            });
+        }
+
+        // Navegación con los botones inferiores
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalCards;
+            updateCarousel();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+            updateCarousel();
+        });
+
+        // Hacer clic directamente en una tarjeta lateral la trae al frente
+        cards.forEach((card, index) => {
+            card.addEventListener('click', (e) => {
+                if(e.target.tagName !== 'BUTTON') {
+                    currentIndex = index;
+                    updateCarousel();
+                }
+            });
+        });
+
+        // Sistema Interactivo de Modales (Animación Entrada/Salida)
+        cards.forEach(card => {
+            const btn = card.querySelector('.btn-more');
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Evita conflictos de clic con la tarjeta
+                
+                const title = card.querySelector('h3').innerText;
+                const iconClass = card.querySelector('.card-icon').className;
+                const fullContent = card.querySelector('.hidden-info').innerHTML;
+
+                // Estructuramos el contenido dentro de la ventana modal
+                modalBody.innerHTML = `
+                    <h2><i class="${iconClass}"></i> ${title}</h2>
+                    <div>${fullContent}</div>
+                `;
+
+                modal.classList.add('active');
+            });
+        });
+
+        // Cerrar Modal
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // Cerrar haciendo clic fuera del cuadro blanco
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Iniciar el carrusel en su posición inicial
+        updateCarousel();
+    </script>
+</body>
+</html>

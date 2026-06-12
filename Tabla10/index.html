@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla con Animación de Entrada</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .custom-table {
+            border-collapse: separate;
+            border-spacing: 14px 0; /* Espaciado entre columnas */
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Definición de la animación de entrada */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Clase base para aplicar la animación a las columnas */
+        .animated-col {
+            opacity: 0; /* Se mantiene oculto antes de que inicie la animación */
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Delays para el efecto escalonado (de izquierda a derecha) */
+        .col-1 { animation-delay: 0.1s; }
+        .col-2 { animation-delay: 0.3s; }
+        .col-3 { animation-delay: 0.5s; }
+
+        /* Estilos de los Encabezados */
+        .custom-table th {
+            background-color: #0b4c4f;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 15px;
+            border-radius: 6px 6px 0 0;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        /* Estilos de las Celdas de Contenido */
+        .custom-table td {
+            background-color: #ffffff;
+            color: #111111;
+            font-size: 15px;
+            line-height: 1.6;
+            padding: 22px;
+            vertical-align: top;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+            border-radius: 0 0 6px 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02); /* Sutil sombra para dar relieve */
+        }
+
+        /* Listas en Desventajas */
+        .custom-table ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .custom-table li {
+            margin-bottom: 12px;
+        }
+        
+        .custom-table li:last-child {
+            margin-bottom: 0;
+        }
+
+        .paragraph-spacing {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th style="width: 33.33%;" class="animated-col col-1">Características</th>
+                <th style="width: 33.33%;" class="animated-col col-2">Ventajas</th>
+                <th style="width: 33.33%;" class="animated-col col-3">Desventajas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="animated-col col-1">
+                    No se pagan ni capital ni intereses durante el plazo. Los intereses se capitalizan y se suman al saldo.
+                </td>
+                <td class="animated-col col-2">
+                    <div class="paragraph-spacing">
+                        Permite al deudor enfocarse en otras prioridades iniciales (ej., inversión, educación, ejecución de obra).
+                    </div>
+                    <div>
+                        Facilita la liquidez en la etapa temprana del proyecto.
+                    </div>
+                </td>
+                <td class="animated-col col-3">
+                    <ul>
+                        <li>La deuda crece al capitalizar intereses.</li>
+                        <li>Mayor costo financiero al final del crédito.</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

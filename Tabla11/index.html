@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla Animada Centrada - Período de Gracia</title>
+    <style>
+        /* Importación de la fuente Poppins desde Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        /* Forzar que el fondo ocupe el 100% de la ventana */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Centrado absoluto vertical y horizontal en la pantalla */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        /* Contenedor que limita el ancho máximo de la tabla */
+        .table-container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .custom-table {
+            border-collapse: separate;
+            border-spacing: 14px 0; /* Espaciado entre columnas */
+            width: 100%;
+        }
+
+        /* Animación de entrada con un movimiento curvo más elegante */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Aplicación de la animación */
+        .animated-col {
+            opacity: 0; 
+            animation: fadeInUp 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* Efecto secuencial (delays) */
+        .col-1 { animation-delay: 0.15s; }
+        .col-2 { animation-delay: 0.35s; }
+        .col-3 { animation-delay: 0.55s; }
+
+        /* Estilos de los Encabezados */
+        .custom-table th {
+            background-color: #0b4c4f;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 18px 15px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        /* Estilos de las Celdas de Contenido */
+        .custom-table td {
+            background-color: #ffffff;
+            color: #2c3e50;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.6;
+            padding: 24px;
+            vertical-align: top;
+            border-left: 1px solid #eef2f5;
+            border-right: 1px solid #eef2f5;
+            border-bottom: 1px solid #eef2f5;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        /* Listas en la sección de Ventajas */
+        .custom-table ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .custom-table li {
+            margin-bottom: 12px;
+        }
+        
+        .custom-table li:last-child {
+            margin-bottom: 0;
+        }
+
+        .paragraph-spacing {
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th style="width: 33.33%;" class="animated-col col-1">Características</th>
+                    <th style="width: 33.33%;" class="animated-col col-2">Ventajas</th>
+                    <th style="width: 33.33%;" class="animated-col col-3">Desventajas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="animated-col col-1">
+                        Solo se pagan intereses durante el período de gracia. El capital se mantiene constante.
+                    </td>
+                    <td class="animated-col col-2">
+                        <ul>
+                            <li>Evita el crecimiento de la deuda.</li>
+                            <li>Reduce la presión financiera inicial al no pagar capital.</li>
+                        </ul>
+                    </td>
+                    <td class="animated-col col-3">
+                        <div class="paragraph-spacing">
+                            Aunque no crece el saldo, no se reduce el capital.
+                        </div>
+                        <div>
+                            Se mantiene el compromiso de pago de intereses desde el inicio.
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

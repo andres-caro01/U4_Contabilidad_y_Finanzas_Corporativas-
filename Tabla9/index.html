@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla Comparativa de Sistemas - Poppins</title>
+    <style>
+        /* Importación de la fuente Poppins desde Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        /* Forzar que el fondo ocupe el 100% de la ventana */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Centrado absoluto de la tabla en la pantalla */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        /* Contenedor principal */
+        .table-container {
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .custom-table {
+            border-collapse: separate;
+            border-spacing: 5px 0; /* Espaciado entre columnas verticales */
+            width: 100%;
+        }
+
+        /* Animación de entrada fluida */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Clase base para la animación secuencial */
+        .animated-col {
+            opacity: 0; 
+            animation: fadeInUp 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* Delays por columna (efecto cascada de izquierda a derecha) */
+        .col-1 { animation-delay: 0.1s; }
+        .col-2 { animation-delay: 0.25s; }
+        .col-3 { animation-delay: 0.4s; }
+        .col-4 { animation-delay: 0.55s; }
+
+        /* Estilos de los Encabezados (Fila Superior) */
+        .custom-table th {
+            background-color: #0b4c4f;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 18px 15px;
+            border-radius: 6px 6px 0 0;
+            text-align: center;
+            letter-spacing: 0.5px;
+            border-bottom: 4px solid #f9f9f9; /* Separa el header de las celdas */
+        }
+
+        /* Estilos base de las celdas de contenido */
+        .custom-table td {
+            color: #111111;
+            font-size: 15px;
+            padding: 16px 20px;
+            text-align: center;
+            vertical-align: middle;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 4px solid #f9f9f9; /* Espaciado simulado entre filas */
+        }
+
+        /* Columna de Concepto alineada a la izquierda por estética de lectura */
+        .custom-table td.concept-cell {
+            text-align: left;
+            font-weight: 600;
+            color: #2c3e50;
+            padding-left: 25px;
+        }
+
+        /* Fila blanca (Capital) */
+        .row-white td {
+            background-color: #ffffff;
+        }
+
+        /* Fila tintada (Interés) como en la imagen */
+        .row-tinted td {
+            background-color: #e9f1f1;
+        }
+
+        /* Última fila (Total) con bordes redondeados inferiores */
+        .row-total td {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            border-radius: 0 0 6px 6px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;" class="animated-col col-1">Concepto</th>
+                    <th style="width: 25%;" class="animated-col col-2">Americano</th>
+                    <th style="width: 25%;" class="animated-col col-3">Francés</th>
+                    <th style="width: 25%;" class="animated-col col-4">Alemán</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="row-white">
+                    <td class="animated-col col-1 concept-cell">Capital</td>
+                    <td class="animated-col col-2">$ 5.000.000</td>
+                    <td class="animated-col col-3">$ 5.000.000</td>
+                    <td class="animated-col col-4">$ 5.000.000</td>
+                </tr>
+                <tr class="row-tinted">
+                    <td class="animated-col col-1 concept-cell">Interés</td>
+                    <td class="animated-col col-2">$ 6.000.000</td>
+                    <td class="animated-col col-3">$ 3.805.799</td>
+                    <td class="animated-col col-4">$ 3.250.000</td>
+                </tr>
+                <tr class="row-total">
+                    <td class="animated-col col-1 concept-cell">Total</td>
+                    <td class="animated-col col-2">$ 11.000.000</td>
+                    <td class="animated-col col-3">$ 8.805.799</td>
+                    <td class="animated-col col-4">$ 8.250.000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

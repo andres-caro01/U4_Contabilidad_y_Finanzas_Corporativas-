@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo de Evaluación: Matemáticas Financieras y Amortización</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+    <style>
+        :root {
+            --primary: #27728F;
+            --primary-dark: #1C546B;
+            --primary-light: #EBF1F4;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 17px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f9;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #main-container {
+            width: 95%;
+            max-width: 1000px;
+            height: 870px; 
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(39, 114, 143, 0.2);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2.5rem 3.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) #f1f1f1;
+        }
+
+        .text-custom { color: var(--primary); }
+        .bg-custom { background-color: var(--primary); }
+
+        .btn-action {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 3.5rem;
+            border-radius: 99px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+        .btn-action:hover:not(:disabled) {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(39, 114, 143, 0.3);
+        }
+
+        .option-card {
+            transition: all 0.2s ease;
+            border: 2px solid #f1f5f9;
+            cursor: pointer;
+        }
+        
+        .option-card.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .option-card.locked { pointer-events: none; }
+
+        /* Estilos avanzados Drag and Drop */
+        .drop-zone {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            min-height: 65px;
+            transition: all 0.3s;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+        }
+        .drop-zone.active { 
+            border-color: var(--primary); 
+            background: var(--primary-light); 
+        }
+        
+        .drag-item {
+            background: white;
+            border: 2px solid var(--primary);
+            padding: 8px 14px;
+            border-radius: 10px;
+            cursor: grab;
+            font-weight: 500;
+            font-size: 15px;
+            margin: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            color: #1e293b;
+            line-height: 1.4;
+            transition: transform 0.2s;
+        }
+        .drag-item:active { cursor: grabbing; transform: scale(0.98); }
+        .drag-item.dragged-placed { margin: 0; width: 100%; text-align: center; }
+
+        .circle-bar { 
+            fill: none; 
+            stroke: var(--primary); 
+            stroke-width: 10; 
+            stroke-linecap: round; 
+            transition: stroke-dashoffset 1.5s ease-out;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div id="main-container">
+        
+        <div id="screen-start" class="scroll-content flex flex-col items-center justify-center text-center animate__animated animate__fadeIn">
+            <h1 class="text-4xl font-bold text-custom mb-4 leading-tight">Módulo de Repaso Financiero</h1>
+            <p class="text-2xl mb-4 text-slate-600 font-semibold">Créditos, Amortización y Conceptos Clave</p>
+            <p class="mb-10 max-w-2xl text-slate-500 text-lg">Revisa y consolida tus conocimientos sobre la estructura del crédito, periodos de gracia, sistemas de amortización francés y cálculo de cuotas periódicas.</p>
+            <button onclick="startQuiz()" class="btn-action text-xl shadow-lg">INICIAR REPASO</button>
+        </div>
+
+        <div id="screen-quiz" class="hidden flex flex-col h-full">
+            <div class="px-14 pt-8 flex justify-between items-center bg-white z-10">
+                <span id="q-number" class="font-bold text-custom text-sm tracking-widest uppercase"></span>
+                <div class="w-48 h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div id="progress-fill" class="h-full bg-custom transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="scroll-content" id="quiz-body">
+                <p id="q-instruction" class="text-custom font-bold italic mb-2 text-base"></p>
+                <h2 id="q-text" class="text-lg font-semibold mb-6 leading-snug text-slate-800 border-l-4 border-[#27728F] pl-4 py-1 bg-slate-50"></h2>
+
+                <div id="options-container" class="space-y-3"></div>
+
+                <div id="association-container" class="hidden">
+                    <div class="mb-6 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                        <p class="text-xs font-bold mb-3 uppercase text-slate-500 tracking-wider">Conceptos para arrastrar:</p>
+                        <div id="drag-bank" class="flex flex-wrap gap-2 min-h-[50px] p-2 bg-white rounded-xl border border-dashed border-slate-200"></div>
+                    </div>
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden">
+                        <table class="w-full border-collapse text-base">
+                            <thead>
+                                <tr class="bg-slate-100 text-left">
+                                    <th class="p-4 text-sm font-bold text-slate-600 w-3/4">Definición Correcta</th>
+                                    <th class="p-4 text-sm font-bold text-slate-600 w-1/4 text-center">Concepto Relacionado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="feedback-box" class="hidden mt-6 p-5 rounded-2xl border-2 animate__animated animate__fadeInUp text-base">
+                    <p id="feedback-title" class="font-bold text-lg mb-1"></p>
+                    <div id="feedback-body" class="leading-relaxed text-slate-700"></div>
+                    <button id="btn-continue" onclick="nextStep()" class="mt-4 bg-slate-800 text-white px-8 py-2 rounded-xl hover:bg-black transition-all font-bold text-sm">Continuar</button>
+                </div>
+
+                <button id="btn-validate" onclick="validateAnswer()" class="btn-action w-full mt-6 shadow-xl text-lg">Validar Respuesta</button>
+            </div>
+        </div>
+
+        <div id="screen-results" class="hidden scroll-content flex flex-col items-center justify-center text-center">
+            <h2 class="text-4xl font-bold mb-2 text-custom">Repaso Finalizado</h2>
+            <div class="relative flex items-center justify-center my-4">
+                <svg class="w-56 h-56 -rotate-90">
+                    <circle cx="112" cy="112" r="95" stroke="#f1f5f9" stroke-width="10" fill="none"></circle>
+                    <circle id="final-circle" cx="112" cy="112" r="95" class="circle-bar" stroke-dasharray="596" stroke-dashoffset="596"></circle>
+                </svg>
+                <div class="absolute text-5xl font-black text-slate-800"><span id="result-percent">0</span>%</div>
+            </div>
+            <p id="result-score" class="text-xl font-bold mb-4 text-slate-700"></p>
+            <div id="result-msg" class="max-w-2xl mb-8 p-5 bg-slate-50 rounded-2xl italic text-slate-600 text-base"></div>
+            <button onclick="location.reload()" class="btn-action">Reiniciar Repaso</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                type: "drag",
+                instruction: "Arrastrar y Soltar",
+                question: "1. Relacione cada concepto con su definición correcta:",
+                pairs: [
+                    { concept: "Monto", match: "Es la suma de recursos financieros solicitada a una entidad crediticia, que constituye el valor inicial del préstamo o crédito otorgado." },
+                    { concept: "Saldo", match: "Es el valor pendiente de la obligación crediticia, es decir, la cantidad aún adeudada después de aplicar los abonos periódicos de capital e intereses." },
+                    { concept: "Cuota", match: "Es el pago periódico, generalmente mensual, compuesto por capital e intereses, que el deudor debe efectuar para atender la obligación financiera en los términos establecidos." },
+                    { concept: "Tasa de Interés", match: "Representa el costo del capital prestado, expresado como un porcentaje sobre el saldo del crédito, que constituye la rentabilidad percibida por la entidad financiera por el uso de los recursos." },
+                    { concept: "Plazo", match: "Horizonte temporal previamente acordado entre el deudor y la entidad financiera para la amortización total de la obligación crediticia." },
+                    { concept: "Abono a Capital", match: "Es una fracción de la cuota periódica destinada a la amortización del capital adeudado, contribuyendo a la disminución progresiva del saldo pendiente." }
+                ],
+                feedback: "Estos conceptos son clave porque permiten comprender cómo se estructura un crédito. Identificarlos correctamente facilita la lectura y análisis de tablas de amortización."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "2. ¿Cuál es la principal diferencia entre el periodo de gracia total (caso 1) y el periodo de gracia parcial (caso 2)?",
+                options: [
+                    {t: "A. En el periodo de gracia total no se pagan ni capital ni intereses, mientras que en el periodo parcial solo se pagan intereses y el capital se mantiene constante.", c: true},
+                    {t: "B. En el periodo de gracia total los intereses desaparecen, mientras que en el parcial los intereses aumentan.", c: false},
+                    {t: "C. En el periodo de gracia total se reduce el capital, mientras que en el parcial el capital siempre aumenta.", c: false},
+                    {t: "D. En el periodo de gracia total se pagan únicamente intereses, mientras que en el periodo parcial se paga capital e intereses desde el inicio.", c: false}
+                ],
+                feedback: "En el caso 1 periodo de gracia total, no se pagan ni capital ni intereses durante el plazo. Los intereses se capitalizan y se suman al saldo, mientras que en el caso 2 periodo de gracia parcial, solo se pagan intereses durante el período de gracia. El capital se mantiene constante. La elección entre un período de gracia total o parcial dependerá de las características de la inversión, del proyecto o de las necesidades de liquidez del deudor."
+            },
+            {
+                type: "vf",
+                instruction: "Seleccione Verdadero o Falso",
+                question: "3. En el método de amortización francés, la amortización del capital es constante y, por tanto, las cuotas son decrecientes.",
+                options: [
+                    {t: "Verdadero", c: false},
+                    {t: "Falso", c: true}
+                ],
+                feedback: "En el método de amortización francés, la característica principal es que la cuota total permanece constante durante toda la vida del crédito. Sin embargo, la composición de la cuota varía: en las primeras etapas predomina el pago de intereses y, con el tiempo, aumenta progresivamente la proporción destinada al abono de capital."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "4. Determine el valor de la cuota mensual de un préstamo de $60.000.000 a 12 meses, con una tasa de interés del 25% E.A., utilizando el método de amortización francés.",
+                options: [
+                    {t: "A. $ 11.262.030", c: false},
+                    {t: "B. $ 16.106.855", c: false},
+                    {t: "C. $ 5.630.770", c: true},
+                    {t: "D. $ 1.126.204", c: false}
+                ],
+                feedback: "Para resolver correctamente el ejercicio es necesario convertir la tasa de interés efectiva anual a la tasa periódica mensual y aplicar la fórmula de cuota mencionada en la guía: <div class='my-4 overflow-x-auto text-center bg-white p-3 rounded-xl border border-slate-200'>$$VP \\times \\left[\\frac{i \\times (1 + i)^n}{(1 + i)^n - 1}\\right]$$</div>"
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        const totalPoints = 9; // 6 puntos del Drag de la Pregunta 1 + 3 puntos de las otras preguntas
+
+        function startQuiz() {
+            document.getElementById('screen-start').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = quizData[currentIdx];
+            document.getElementById('q-number').innerText = `PREGUNTA ${currentIdx + 1}/${quizData.length}`;
+            document.getElementById('progress-fill').style.width = `${((currentIdx + 1)/quizData.length)*100}%`;
+            document.getElementById('q-instruction').innerText = q.instruction;
+            document.getElementById('q-text').innerText = q.question;
+            document.getElementById('feedback-box').classList.add('hidden');
+            document.getElementById('btn-validate').classList.remove('hidden');
+
+            const optContainer = document.getElementById('options-container');
+            const assocContainer = document.getElementById('association-container');
+
+            if (q.type === "drag") {
+                optContainer.classList.add('hidden');
+                assocContainer.classList.remove('hidden');
+                setupDragAndDrop(q);
+            } else {
+                assocContainer.classList.add('hidden');
+                optContainer.classList.remove('hidden');
+                setupSelectionOptions(q, optContainer);
+            }
+        }
+
+        function setupSelectionOptions(q, container) {
+            container.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const d = document.createElement('div');
+                d.className = "option-card flex items-center p-4 rounded-xl mb-2 text-base";
+                d.innerHTML = `
+                    <input type="radio" name="ans" id="o${i}" value="${i}" class="w-5 h-5 accent-[#27728F]">
+                    <label for="o${i}" class="ml-4 w-full cursor-pointer font-medium text-slate-700">${opt.t}</label>
+                `;
+                d.onclick = () => {
+                    document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+                    d.classList.add('selected');
+                    d.querySelector('input').checked = true;
+                };
+                container.appendChild(d);
+            });
+        }
+
+        function setupDragAndDrop(q) {
+            const dragBank = document.getElementById('drag-bank');
+            const tableBody = document.getElementById('table-body');
+            
+            dragBank.innerHTML = '';
+            tableBody.innerHTML = '';
+
+            // Se barajan los conceptos para colocarlos ordenadamente en el banco de arrastre
+            let concepts = q.pairs.map(p => p.concept).sort(() => Math.random() - 0.5);
+
+            concepts.forEach((conceptName, i) => {
+                const item = document.createElement('div');
+                item.className = "drag-item";
+                item.draggable = true;
+                item.innerText = conceptName;
+                item.id = `drag-${i}`;
+                item.addEventListener('dragstart', (e) => e.dataTransfer.setData('text/plain', e.target.id));
+                dragBank.appendChild(item);
+            });
+
+            // Se renderizan las definiciones fijas en la tabla
+            q.pairs.forEach((pair, idx) => {
+                const row = document.createElement('tr');
+                row.className = "hover:bg-slate-50 transition-colors";
+                row.innerHTML = `
+                    <td class="p-4 text-slate-700 border-b border-slate-100 text-sm leading-relaxed w-3/4">${pair.match}</td>
+                    <td class="p-4 border-b border-slate-100 w-1/4">
+                        <div class="drop-zone" id="drop-${idx}" data-match="${pair.match}">
+                            <span class="text-slate-400 text-xs font-medium text-center px-1">Arrastra aquí</span>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('active');
+                });
+                zone.addEventListener('dragleave', () => zone.classList.remove('active'));
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('active');
+                    const itemId = e.dataTransfer.getData('text/plain');
+                    const draggedElement = document.getElementById(itemId);
+                    
+                    if (draggedElement) {
+                        const currentChild = zone.querySelector('.drag-item');
+                        if (currentChild) {
+                            dragBank.appendChild(currentChild);
+                            currentChild.classList.remove('dragged-placed');
+                        }
+                        
+                        zone.innerHTML = '';
+                        draggedElement.classList.add('dragged-placed');
+                        zone.appendChild(draggedElement);
+                    }
+                });
+            });
+        }
+
+        function validateAnswer() {
+            const q = quizData[currentIdx];
+            let isCorrect = true;
+            let subScore = 0;
+
+            if (q.type === "drag") {
+                const zones = document.querySelectorAll('.drop-zone');
+                let allPlaced = true;
+
+                zones.forEach(zone => {
+                    if (!zone.querySelector('.drag-item')) allPlaced = false;
+                });
+
+                if (!allPlaced) { 
+                    alert("Por favor, relacione todos los conceptos antes de continuar."); 
+                    return; 
+                }
+
+                zones.forEach(zone => {
+                    const definitionText = zone.getAttribute('data-match');
+                    const placedConcept = zone.querySelector('.drag-item').innerText;
+                    const expectedConcept = q.pairs.find(p => p.match === definitionText).concept;
+                    
+                    if (placedConcept !== expectedConcept) {
+                        isCorrect = false;
+                        zone.style.borderColor = "#ef4444";
+                        zone.style.background = "#fef2f2";
+                    } else {
+                        subScore++;
+                        zone.style.borderColor = "#22c55e";
+                        zone.style.background = "#f0fdf4";
+                    }
+                    zone.style.pointerEvents = "none";
+                });
+                score += subScore;
+
+            } else {
+                const sel = document.querySelector('input[name="ans"]:checked');
+                if (!sel) { alert("Por favor, seleccione una opción."); return; }
+                isCorrect = q.options[sel.value].c;
+                if (isCorrect) score++;
+                document.querySelectorAll('.option-card').forEach(el => el.classList.add('locked'));
+            }
+
+            const fBox = document.getElementById('feedback-box');
+            fBox.classList.remove('hidden', 'bg-green-50', 'border-green-200', 'bg-red-50', 'border-red-200');
+            document.getElementById('btn-validate').classList.add('hidden');
+
+            const fTitle = document.getElementById('feedback-title');
+            if (isCorrect && (q.type !== 'drag' || subScore === 6)) {
+                fTitle.innerText = "¡Correcto!";
+                fTitle.className = "font-bold text-lg text-green-700";
+                fBox.classList.add('bg-green-50', 'border-green-200');
+            } else {
+                fTitle.innerText = q.type === 'drag' ? `Puntaje parcial: ${subScore} de 6 conceptos` : "Incorrecto";
+                fTitle.className = "font-bold text-lg text-red-700";
+                fBox.classList.add('bg-red-50', 'border-red-200');
+            }
+            
+            document.getElementById('feedback-body').innerHTML = `<strong>Realimentación:</strong> ${q.feedback}`;
+            
+            // Forzar a MathJax a procesar la fórmula si aparece en la realimentación
+            if (window.MathJax) {
+                MathJax.typesetPromise([document.getElementById('feedback-body')]);
+            }
+        }
+
+        function nextStep() {
+            currentIdx++;
+            if (currentIdx < quizData.length) renderQuestion();
+            else showResults();
+        }
+
+        function showResults() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-results').classList.remove('hidden');
+            
+            const percent = Math.round((score / totalPoints) * 100);
+            const circumference = 596;
+            const offset = circumference - (percent / 100) * circumference;
+            
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    document.getElementById('final-circle').style.strokeDashoffset = offset;
+                }, 50);
+            });
+            
+            let count = 0;
+            const timer = setInterval(() => {
+                if (count >= percent) {
+                    document.getElementById('result-percent').innerText = percent;
+                    clearInterval(timer);
+                } else {
+                    count++;
+                    document.getElementById('result-percent').innerText = count;
+                }
+            }, 15);
+
+            document.getElementById('result-score').innerText = `Puntaje Final: ${score} de ${totalPoints} puntos`;
+            const msg = document.getElementById('result-msg');
+            if (percent === 100) msg.innerText = "¡Excelente! Dominas a la perfección la terminología financiera, los cálculos del modelo de amortización francés y los efectos de los periodos de gracia.";
+            else if (percent >= 70) msg.innerText = "¡Muy buen trabajo! Logras estructurar adecuadamente la dinámica de amortización e identificas los factores de conversión de tasas.";
+            else msg.innerText = "Te recomendamos repasar las diferencias mecánicas entre el periodo de gracia total y parcial, así como el uso de la ecuación de anualidades.";
+        }
+    </script>
+</body>
+</html>

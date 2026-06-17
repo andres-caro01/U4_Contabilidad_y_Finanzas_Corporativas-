@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Módulos de Aprendizaje Financiero</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --bg-color: #f3f7f9;
@@ -23,7 +27,8 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            /* Modificado para usar Poppins como fuente principal */
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
@@ -272,7 +277,6 @@
 </head>
 <body>
 
-    <!-- Instrucción flotante -->
     <div class="floating-instruction">
         <svg viewBox="0 0 24 24"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Haga clic en los botones para ampliar la información.
@@ -284,40 +288,33 @@
             <p>Explora los conceptos clave de cada módulo financiero haciendo clic en sus tarjetas.</p>
         </header>
 
-        <!-- BLOQUE 1 -->
         <div class="section-title">Bloque General de Aprendizaje</div>
         <div class="grid">
-            <!-- Tarjeta 1 -->
             <div class="card style-light-teal" onclick="openModal('Pregunta 1', '¿Cuáles son las principales diferencias entre el mercado monetario, de divisas y de capitales?')">
                 <div class="badge">1</div>
                 <div class="card-content">¿Cuáles son las principales diferencias...<div class="preview-dots">...</div></div>
                 <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
             </div>
-            <!-- Tarjeta 2 -->
             <div class="card style-light-teal" onclick="openModal('Pregunta 2', '¿Qué tipos de activos financieros existen y cuáles son sus principales usos?')">
                 <div class="badge">2</div>
                 <div class="card-content">¿Qué tipos de activos financieros existen...<div class="preview-dots">...</div></div>
                 <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
             </div>
-            <!-- Tarjeta 3 -->
             <div class="card style-dark-teal" onclick="openModal('Pregunta 3', '¿Cómo se relacionan la rentabilidad, el riesgo y la liquidez en la selección de activos financieros?')">
                 <div class="badge">3</div>
                 <div class="card-content">¿Cómo se relacionan la rentabilidad...<div class="preview-dots">...</div></div>
                 <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
             </div>
-            <!-- Tarjeta 4 -->
             <div class="card style-dark-teal" onclick="openModal('Pregunta 4', '¿Qué tipos de garantías existen y cómo influyen en la aprobación de un crédito?')">
                 <div class="badge">4</div>
                 <div class="card-content">¿Qué tipos de garantías existen...<div class="preview-dots">...</div></div>
                 <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
             </div>
-            <!-- Tarjeta 5 -->
             <div class="card style-dark-teal" onclick="openModal('Pregunta 5', '¿Cuál es el ciclo de vida típico de la aprobación de un crédito bancario?')">
                 <div class="badge">5</div>
                 <div class="card-content">¿Cuál es el ciclo de vida típico...<div class="preview-dots">...</div></div>
                 <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
             </div>
-            <!-- Tarjeta 6 -->
             <div class="card style-light-teal" onclick="openModal('Pregunta 6', '¿En qué consiste el método de amortización americano, francés y alemán?')">
                 <div class="badge">6</div>
                 <div class="card-content">¿En qué consiste el método de amortización...<div class="preview-dots">...</div></div>
@@ -325,22 +322,18 @@
             </div>
         </div>
 
-        <!-- BLOQUE 2 -->
         <div class="section-title blue">Bloque de Análisis de Riesgo y Proyecciones</div>
         <div class="grid">
-            <!-- Tarjeta 1 (B2) -->
             <div class="card style-light-blue" onclick="openModal('Análisis Avanzado 1', '¿Cuál es la diferencia entre un período de gracia con capitalización de intereses y uno con pago parcial?')">
                 <div class="badge">1</div>
                 <div class="card-content">¿Cuál es la diferencia entre un período...<div class="preview-dots">...</div></div>
                 <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
             </div>
-            <!-- Tarjeta 2 (B2) -->
             <div class="card style-light-blue" onclick="openModal('Análisis Avanzado 2', '¿Qué técnicas de proyección de escenarios existen para anticipar riesgos en proyectos financieros?')">
                 <div class="badge">2</div>
                 <div class="card-content">¿Qué técnicas de proyección de escenarios...<div class="preview-dots">...</div></div>
                 <div class="card-action"><button class="btn">Ver más <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
             </div>
-            <!-- Tarjeta 3 (B2) -->
             <div class="card style-dark-blue" onclick="openModal('Análisis Avanzado 3', '¿De qué manera la simulación de Montecarlo aporta una visión más completa frente a la incertidumbre?')">
                 <div class="badge">3</div>
                 <div class="card-content">¿De qué manera la simulación de Montecarlo...<div class="preview-dots">...</div></div>
@@ -349,7 +342,6 @@
         </div>
     </div>
 
-    <!-- Modal -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
         <div class="modal" onclick="event.stopPropagation()">
             <h3 id="modalTitle">Pregunta Completa</h3>
